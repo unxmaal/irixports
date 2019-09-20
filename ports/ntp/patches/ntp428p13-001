@@ -1,0 +1,96 @@
+diff -Naur ntp-4.2.8p13.orig/include/ntp_request.h ntp-4.2.8p13/include/ntp_request.h
+--- ntp-4.2.8p13.orig/include/ntp_request.h	2018-02-09 18:57:58.000000000 +0000
++++ ntp-4.2.8p13/include/ntp_request.h	2019-09-20 15:18:26.406716264 +0000
+@@ -662,6 +662,10 @@
+ 	struct in6_addr mask6; 	/* match mask (v6) */
+ };
+ 
++#if defined(__sgi)
++#pragma pack 4
++#endif
++
+ 
+ /*
+  * Structure used for specifying restrict entries
+@@ -698,6 +702,10 @@
+ 	struct in6_addr daddr6;	/* host address V6 style */
+ };
+ 
++#if defined(__sgi)
++#pragma pack 0
++#endif
++
+ 
+ /*
+  * Structure used for returning monitor data
+diff -Naur ntp-4.2.8p13.orig/lib/isc/pthreads/mutex.c ntp-4.2.8p13/lib/isc/pthreads/mutex.c
+--- ntp-4.2.8p13.orig/lib/isc/pthreads/mutex.c	2012-06-02 09:46:30.000000000 +0000
++++ ntp-4.2.8p13/lib/isc/pthreads/mutex.c	2019-09-20 15:23:55.541206664 +0000
+@@ -30,6 +30,8 @@
+ #include <isc/util.h>
+ #include <isc/strerror.h>
+ 
++#define HAVE_PTHREADS 8
++
+ #if HAVE_PTHREADS < 5		/* HP-UX 10.20 has 4, needs this */
+ # define pthread_mutex_init(m, a)					\
+ 	 pthread_mutex_init(m, (a)					\
+diff -Naur ntp-4.2.8p13.orig/lib/isc/unix/ifiter_getifaddrs.c ntp-4.2.8p13/lib/isc/unix/ifiter_getifaddrs.c
+--- ntp-4.2.8p13.orig/lib/isc/unix/ifiter_getifaddrs.c	2015-05-08 23:28:32.000000000 +0000
++++ ntp-4.2.8p13/lib/isc/unix/ifiter_getifaddrs.c	2019-09-20 15:23:16.253023464 +0000
+@@ -33,6 +33,17 @@
+ static isc_boolean_t seenv6 = ISC_FALSE;
+ #endif
+ 
++struct ifaddrs {
++    struct ifaddrs   *ifa_next;         /* Pointer to next struct */
++    char             *ifa_name;         /* Interface name */
++    unsigned int     ifa_flags;         /* Interface flags */
++    struct sockaddr  *ifa_addr;         /* Interface address */
++    struct sockaddr  *ifa_netmask;      /* Interface netmask */
++#undef ifa_dstaddr
++    struct sockaddr  *ifa_dstaddr;      /* P2P interface destination */
++    void             *ifa_data;         /* Address specific data */
++};
++
+ /*% Iterator structure */
+ struct isc_interfaceiter {
+ 	unsigned int		magic;		/*%< Magic number. */
+diff -Naur ntp-4.2.8p13.orig/libntp/work_thread.c ntp-4.2.8p13/libntp/work_thread.c
+--- ntp-4.2.8p13.orig/libntp/work_thread.c	2018-03-12 10:36:51.000000000 +0000
++++ ntp-4.2.8p13/libntp/work_thread.c	2019-09-20 15:20:07.658280264 +0000
+@@ -23,6 +23,8 @@
+ #include "timespecops.h"
+ #include "ntp_worker.h"
+ 
++#define PTHREAD_STACK_MIN 105
++
+ #define CHILD_EXIT_REQ	((blocking_pipe_header *)(intptr_t)-1)
+ #define CHILD_GONE_RESP	CHILD_EXIT_REQ
+ /* Queue size increments:
+diff -Naur ntp-4.2.8p13.orig/tests/libntp/a_md5encrypt.c ntp-4.2.8p13/tests/libntp/a_md5encrypt.c
+--- ntp-4.2.8p13.orig/tests/libntp/a_md5encrypt.c	2019-02-20 12:21:43.000000000 +0000
++++ ntp-4.2.8p13/tests/libntp/a_md5encrypt.c	2019-09-20 15:19:42.518904264 +0000
+@@ -89,12 +89,22 @@
+ void
+ test_IPv6AddressToRefId(void) {
+ 	const int expected = 0x75cffd52;
++#if !defined(__sgi)
+ 	const struct in6_addr address = { { {
+ 		0x20, 0x01, 0x0d, 0xb8,
+ 		0x85, 0xa3, 0x08, 0xd3,
+ 		0x13, 0x19, 0x8a, 0x2e,
+ 		0x03, 0x70, 0x73, 0x34
+ 	} } };
++#else
++    const struct in6_addr address;
++    address.u6_addr8 = {
++        0x20, 0x01, 0x0d, 0xb8,
++        0x85, 0xa3, 0x08, 0xd3,
++        0x13, 0x19, 0x8a, 0x2e,
++        0x03, 0x70, 0x73, 0x34
++    };
++#endif
+ 	sockaddr_u addr;
+ 
+ 	addr.sa6.sin6_family = AF_INET6;
