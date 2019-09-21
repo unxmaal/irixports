@@ -1,0 +1,5 @@
+/usr/didbs/current/gbs8_1/bin/gcc -DHAVE_CONFIG_H -I. -I. -I.. -I../include    -I/usr/people/edodd/.local/include -I/usr/people/edodd/.local/include -Wall -Wno-parentheses -O3 -fforce-addr -fomit-frame-pointer -finline-functions -funroll-loops  -c -o encoder_example-encoder_example.o `test -f 'encoder_example.c' || echo './'`encoder_example.c
+/bin/sh ../libtool --mode=link /usr/didbs/current/gbs8_1/bin/gcc -I/usr/people/edodd/.local/include -Wall -Wno-parentheses -O3 -fforce-addr -fomit-frame-pointer -finline-functions -funroll-loops    -o dump_video  dump_video.o getopt.o getopt1.o ../lib/libtheoradec.la -L/usr/people/edodd/.local/lib -logg
+libtool: link: /usr/didbs/current/gbs8_1/bin/gcc -I/usr/people/edodd/.local/include -Wall -Wno-parentheses -O3 -fforce-addr -fomit-frame-pointer -finline-functions -funroll-loops -o .libs/dump_video dump_video.o getopt.o getopt1.o  ../lib/.libs/libtheoradec.so -L/usr/people/edodd/.local/lib /usr/people/edodd/.local/lib/libogg.so -Wl,-rpath -Wl,/usr/people/edodd/.local/lib
+gcc: error: getopt.o: No such file or directory
+gcc: error: getopt1.o: No such file or directory

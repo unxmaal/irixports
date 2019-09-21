@@ -1,0 +1,14 @@
+Making all in src
+gmake[2]: Entering directory '/usr/people/edodd/projects/github/unxmaal/irixports/ports/libspeex/speex-1.2.0/src'
+  CC       speexenc.o
+  CC       wav_io.o
+  CC       skeleton.o
+  CC       speexdec.o
+  CCLD     speexdec
+speexdec.o: In function `main':
+/usr/people/edodd/projects/github/unxmaal/irixports/ports/libspeex/speex-1.2.0/src/speexdec.c:483: undefined reference to `getopt_long'
+/usr/people/edodd/projects/github/unxmaal/irixports/ports/libspeex/speex-1.2.0/src/speexdec.c:483: undefined reference to `getopt_long'
+/usr/people/edodd/projects/github/unxmaal/irixports/ports/libspeex/speex-1.2.0/src/speexdec.c:483: undefined reference to `getopt_long'
+/usr/people/edodd/projects/github/unxmaal/irixports/ports/libspeex/speex-1.2.0/src/speexdec.c:483: undefined reference to `getopt_long'
+/usr/people/edodd/projects/github/unxmaal/irixports/ports/libspeex/speex-1.2.0/src/speexdec.c:538: undefined reference to `getopt_long'
+collect2: error: ld returned 1 exit status
