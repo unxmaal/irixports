@@ -1,0 +1,8 @@
+libtool: compile:  /usr/didbs/current/gbs8_1/bin/gcc -DHAVE_CONFIG_H -I. -g -O2 -Wall -W -MT tif_jpeg.lo -MD -MP -MF .deps/tif_jpeg.Tpo -c tif_jpeg.c  -DPIC -o .libs/tif_jpeg.o
+tif_jpeg.c: In function 'TIFFjpeg_create_compress':
+tif_jpeg.c:287:13: error: 'struct jpeg_compress_struct' has no member named 'client_data'
+  sp->cinfo.c.client_data = NULL;
+             ^
+tif_jpeg.c: In function 'TIFFjpeg_create_decompress':
+tif_jpeg.c:301:13: error: 'struct jpeg_decompress_struct' has no member named 'client_data'
+  sp->cinfo.d.client_data = NULL;
