@@ -1,0 +1,24 @@
+src/util.cc: In function 'double GetLoadAverage()':
+src/util.cc:580:10: warning: unused variable 'loadavg' [-Wunused-variable]
+   double loadavg[3] = { 0.0f, 0.0f, 0.0f };
+          ^~~~~~~
+src/ninja.cc: In function 'int {anonymous}::ReadFlags(int*, char***, {anonymous}::Options*, BuildConfig*)':
+src/ninja.cc:996:9: error: 'option' does not name a type; did you mean 'options'?
+   const option kLongOptions[] = {
+         ^~~~~~
+         options
+src/ninja.cc:1004:66: error: 'kLongOptions' was not declared in this scope
+          (opt = getopt_long(*argc, *argv, "d:f:j:k:l:nt:vw:C:h", kLongOptions,
+                                                                  ^~~~~~~~~~~~
+src/ninja.cc:1004:66: note: suggested alternative: 'options'
+          (opt = getopt_long(*argc, *argv, "d:f:j:k:l:nt:vw:C:h", kLongOptions,
+                                                                  ^~~~~~~~~~~~
+                                                                  options
+src/ninja.cc:1004:17: error: 'getopt_long' was not declared in this scope
+          (opt = getopt_long(*argc, *argv, "d:f:j:k:l:nt:vw:C:h", kLongOptions,
+                 ^~~~~~~~~~~
+src/ninja.cc:1004:17: note: suggested alternative: 'getoptreset'
+          (opt = getopt_long(*argc, *argv, "d:f:j:k:l:nt:vw:C:h", kLongOptions,
+                 ^~~~~~~~~~~
+                 getoptreset
+when running:  /usr/didbs/current/gbs8_1/bin/g++ -MMD -MT build/ninja.o -MF build/ninja.o.d -g -Wall -Wextra -Wno-deprecated -Wno-unused-parameter -fno-rtti -fno-exceptions -fvisibility=hidden -pipe -Wno-missing-field-initializers '-DNINJA_PYTHON="python"' -O2 -DNDEBUG -fdiagnostics-color -DNINJA_HAVE_BROWSE -c src/ninja.cc -o build/ninja.o
